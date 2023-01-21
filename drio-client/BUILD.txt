@@ -1,0 +1,20 @@
+Setup DynamoRIO env:
+
+Install Visual Studio 2022 (2019 should do as well)
+Ensure CMake is available
+Start VS Command prompt
+
+Unpack DynamoRIO 9.0.1 release to F:
+(tracerdll is a full copy of instrace_simple with my adaptions)
+
+mkdir myDynamoRIOBuild
+cd myDynamoRIOBuild
+mkdir build
+cd build
+cmake -DDynamoRIO_DIR=$DYNAMORIO_HOME/cmake $DYNAMORIO_HOME/samples
+make tracerdll 
+
+Use:
+F:\DynamoRIO-Windows-9.0.1\bin64>drrun -c f:\myDynamoRIOBuild\bin\tracer.dll -- "c:\Program Files\Google\Chrome\Application\chrome.exe" --no-sandbox
+
+in tracer.c set MODULE2TRACE to the file/modulename you want to inspect, e.g. a Chrome plugin
