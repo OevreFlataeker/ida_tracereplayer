@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "ida-tracereplayer"
+version = "0.1.0"
+description = "A trace replayer for IDA Pro"
+authors = ["Markus Dauberschmidt <daubsi@gmx.de>"]
+readme = "README.md"
+packages = [{include = "ida_tracereplayer"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+PyQt5 = "^5.15.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
