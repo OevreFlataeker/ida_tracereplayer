@@ -35,6 +35,7 @@ Tested with IDA Pro 8.2 under Windows 10 22H2 and Python 3.10. Should work with 
 
 ### Thank you
 
-Developed with IDACode [https://github.com/ioncodes/idacode]
+Developed with [IDACode](https://github.com/ioncodes/idacode)
+
 
 
