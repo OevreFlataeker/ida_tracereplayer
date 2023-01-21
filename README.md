@@ -29,6 +29,8 @@ git clone into %APPDATA%/Hex-Rays/IDA Pro/plugins
 
 - Vary color based on number of visits to BB
 
+- Improve the documentation a LOT
+
 ### System requirements
 
 Tested with IDA Pro 8.2 under Windows 10 22H2 and Python 3.10. Should work with any decent version of IDA Pro > 7.4
