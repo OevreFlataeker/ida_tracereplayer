@@ -15,7 +15,7 @@ git clone into %APPDATA%/Hex-Rays/IDA Pro/plugins
 
 - Select File -> Script file... to run the plugin's '__init__.py' file.
 
-- Click "Load trace" to load the text trace
+- Click "Load trace" to load the text trace (see example directory for an example trace file)
 
 - Double click a step entry to go to that step, use prev/next to go backwards/forwards. Enter step id and click "Go to" to jump directly to this step
 
