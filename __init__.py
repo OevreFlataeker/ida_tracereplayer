@@ -35,7 +35,7 @@ class ColoringBB():
                 self.startea, self.endea = block.start_ea, block.end_ea
                 breakbase = ida_nalt.get_imagebase()
 
-class MyPluginFormClass(idaapi.PluginForm): 
+class TraceReplayerClass(idaapi.PluginForm): 
 	index = 0
 	addr = []
 	base = idaapi.get_imagebase() 
@@ -103,8 +103,8 @@ class MyPluginFormClass(idaapi.PluginForm):
 
 		self.prevbtn = QtWidgets.QPushButton("Prev") 
 		self.prevbtn.clicked.connect(self.BackTrace) 
-		pn = QtGui.QPixmap("prev.png")
-		ic = QtGui.QIcon("prev.png")
+		pn = QtGui.QPixmap("images/prev.png")
+		ic = QtGui.QIcon("images/prev.png")
 		self.prevbtn.setIcon(ic)
 		
 
@@ -113,8 +113,8 @@ class MyPluginFormClass(idaapi.PluginForm):
 		self.nextbtn = QtWidgets.QPushButton("Next") 
 		self.nextbtn.isDefault = True
 		self.nextbtn.clicked.connect(self.AdvanceTrace) 
-		pn = QtGui.QPixmap("next.png")
-		ic = QtGui.QIcon("next.png")
+		pn = QtGui.QPixmap("images/next.png")
+		ic = QtGui.QIcon("images/next.png")
 		self.nextbtn.setIcon(ic)
 		layout4.addWidget(self.nextbtn) 
 		layout.addLayout(layout4)
@@ -229,5 +229,5 @@ class MyPluginFormClass(idaapi.PluginForm):
 		self.txtindex.setText(str(self.index+1))
 		self.JumpSearchIndex(self.index)				
 
-plg = MyPluginFormClass() 
+plg = TraceReplayerClass() 
 plg.Show("daubsi's Tracefile Replayer") 
