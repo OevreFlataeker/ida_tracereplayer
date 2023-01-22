@@ -3,6 +3,8 @@ import idaapi
 import ida_nalt
 from PyQt5 import QtCore, QtGui, QtWidgets 
 import idc
+import ida_auto 
+import ida_kernwin
 
 breakpoint()
 
@@ -45,8 +47,10 @@ class TraceReplayerClass(idaapi.PluginForm):
 
 		self.parent = self.FormToPyQtWidget(form) # IDAPython 		
 		self.PopulateForm()
-		print(hex(self.base) )
- 
+		print(f"Imagebase of current project: {hex(self.base)}")
+		if ida_auto.get_auto_state() != ida_auto.AU_NONE and ida_auto.is_auto_enabled():
+			print("Auto analysis is still running. Please let it finish before using trace analyzer.")
+			
 	def PopulateForm(self): 
 		# Create layout 
 		layout = QtWidgets.QVBoxLayout() 
@@ -132,24 +136,26 @@ class TraceReplayerClass(idaapi.PluginForm):
 		self.parent.setLayout(layout) 
 	
 	def UpdateFunctions(self):
-
+		ida_kernwin.show_wait_box("Updating function list...")
 		for i in range(self.example_row.rowCount()):
 			cur_addr = self.addr[i]
-			f = idaapi.get_func(cur_addr)					
+			f = idaapi.get_func(cur_addr)								
 			self.example_row.setItem(i, 2, QtWidgets.QTableWidgetItem(idaapi.get_long_name(f.start_ea, idaapi.GN_VISIBLE))) # IDAPython 
-
+		ida_kernwin.hide_wait_box()
 
 	def RunTo(self):
 		runto = int(self.runindex.text())
 		if runto<self.index:
 			print("Run to is less than current index. Not running")
 			return
+
+		ida_kernwin.show_wait_box("Running...")
 		while self.index<runto:
 			self.index=self.index+1
 			self.JumpSearchIndex(self.index)
 			self.txtindex.setText(str(self.index+1))
 			self.example_row.selectRow(self.index)
-
+		ida_kernwin.hide_wait_box()
 	def GoTo(self):
 		self.index = int(self.txtindex.text())+1
 		self.example_row.selectRow(self.index-1)
@@ -180,8 +186,9 @@ class TraceReplayerClass(idaapi.PluginForm):
 			col2 = QtWidgets.QTableWidgetItem(str(hex(elem)))
 			col2.setFlags(col2.flags() & ~QtCore.Qt.ItemIsEditable)			
 			self.example_row.setItem(step-1, 1, col2) # IDAPython 
-
-			col3 = QtWidgets.QTableWidgetItem("")
+			
+			f = idaapi.get_func(elem)											
+			col3 = QtWidgets.QTableWidgetItem(idaapi.get_long_name(f.start_ea, idaapi.GN_VISIBLE))
 			col2.setFlags(col2.flags() & ~QtCore.Qt.ItemIsEditable)			
 			self.example_row.update()  
 			self.example_row.setItem(step-1, 2, col3) # IDAPython 
