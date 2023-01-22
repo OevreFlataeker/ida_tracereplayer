@@ -54,7 +54,7 @@ class TraceReplayerClass(idaapi.PluginForm):
 		# Create Table Widget  
 		self.example_row = QtWidgets.QTableWidget()
 		 
-		column_names = ["Step", "BB Address"] 
+		column_names = ["Step", "BB Address", "Function"] 
 		self.example_row.setColumnCount(len(column_names)) 
 		self.example_row.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
 		self.example_row.setRowCount(0) 
@@ -124,7 +124,21 @@ class TraceReplayerClass(idaapi.PluginForm):
 		layout.addWidget(self.loadTracebtn)
 		# make our created layout the dialogs layout 
 		self.parent.setLayout(layout) 
+
+		self.btnfillfunctions = QtWidgets.QPushButton("Update functions") 
+		self.btnfillfunctions.clicked.connect(self.UpdateFunctions)
+		layout.addWidget(self.btnfillfunctions)
+		# make our created layout the dialogs layout 
+		self.parent.setLayout(layout) 
 	
+	def UpdateFunctions(self):
+
+		for i in range(self.example_row.rowCount()):
+			cur_addr = self.addr[i]
+			f = idaapi.get_func(cur_addr)					
+			self.example_row.setItem(i, 2, QtWidgets.QTableWidgetItem(idaapi.get_long_name(f.start_ea, idaapi.GN_VISIBLE))) # IDAPython 
+
+
 	def RunTo(self):
 		runto = int(self.runindex.text())
 		if runto<self.index:
@@ -165,9 +179,13 @@ class TraceReplayerClass(idaapi.PluginForm):
 			
 			col2 = QtWidgets.QTableWidgetItem(str(hex(elem)))
 			col2.setFlags(col2.flags() & ~QtCore.Qt.ItemIsEditable)			
-
 			self.example_row.setItem(step-1, 1, col2) # IDAPython 
+
+			col3 = QtWidgets.QTableWidgetItem("")
+			col2.setFlags(col2.flags() & ~QtCore.Qt.ItemIsEditable)			
 			self.example_row.update()  
+			self.example_row.setItem(step-1, 2, col3) # IDAPython 
+
 			step = step + 1		
 		
 		#print(f"Added {step-1} items.")
