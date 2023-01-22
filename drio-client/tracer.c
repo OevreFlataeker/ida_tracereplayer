@@ -1,4 +1,4 @@
-// My tracer
+/ My tracer
 
 #include <stdio.h>
 #include <stddef.h> /* for offsetof */
@@ -35,7 +35,7 @@ typedef struct {
     uint64 num_refs;
 } per_thread_t;
 
-static bool widevine_loaded = false;
+static bool module_loaded = false;
 static app_pc dllstart;
 static client_id_t client_id;
 static void *mutex;     /* for multithread support */
@@ -155,7 +155,7 @@ event_module_load(void* drcontext, const module_data_t* info, bool loaded)
 
     if (strncmp(prefname, MODULE2TRACE, strlen(MODULE2TRACE)) == 0)
     {
-        widevine_loaded = true;
+        module_loaded = true;
         if (data->logf == NULL)
         {
             data->log =
@@ -197,7 +197,7 @@ dr_client_main(client_id_t id, int argc, const char *argv[])
 
     /* We need 2 reg slots beyond drreg's eflags slots => 3 slots */
     drreg_options_t ops = { sizeof(ops), 3, false };
-    dr_set_client_name("DynamoRIO Sample Client 'instrace' for widevine",
+    dr_set_client_name("DynamoRIO Sample Client 'instrace' for MODULE2TRACE",
                        "http://dynamorio.org/issues");
     if (!drmgr_init() || drreg_init(&ops) != DRREG_SUCCESS)
         DR_ASSERT(false);
